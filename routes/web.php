@@ -15,7 +15,7 @@ use App\Http\Controllers\SpesaAnimaleController;
 use App\Http\Controllers\VisitaVeterinariaController;
 use App\Http\Controllers\ProdottiController;
 use App\Http\Controllers\BringRedirectController;
-use App\Http\Controllers\ShoppingListController; // Nuevo controlador para la lista de compras
+use App\Http\Controllers\ShoppingListController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,9 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', [HomeController::class, 'home']);
 
-    Route::get('dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [HomeController::class, 'home'])->name('dashboard');
 
     Route::get('billing', function () {
         return view('billing');
@@ -53,25 +51,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/user-profile', [InfoUserController::class, 'create']);
     Route::post('/user-profile', [InfoUserController::class, 'store']);
 
-    // ✅ Rutas CRUD para la sección de Servizi
     Route::resource('servizi', ServizioController::class);
 
-    // ✅ Rutas CRUD para la gestión de usuarios
     Route::resource('users', UserController::class);
 
-    // ✅ Rutas CRUD para la gestión de Compiti (Deberes del hogar)
     Route::resource('compiti', CompitoController::class)->parameters([
         'compiti' => 'compito'
     ]);
 
     Route::patch('/compiti/{compito}/toggle', [CompitoController::class, 'toggleStatus'])->name('compiti.toggle');
 
-    // ✅ Rutas CRUD para la gestión de Animali
     Route::resource('animali', AnimaleController::class)->parameters([
         'animali' => 'animale'
     ]);
 
-    // ✅ Rutas CRUD para la gestión del Inventario de Animali
     Route::prefix('animali/{animale}/inventarioanimali')->group(function () {
         Route::get('/', [InventarioAnimaleController::class, 'index'])->name('inventarioanimali.index');
         Route::get('/create', [InventarioAnimaleController::class, 'create'])->name('inventarioanimali.create');
@@ -81,7 +74,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/{inventario}', [InventarioAnimaleController::class, 'destroy'])->name('inventarioanimali.destroy');
     });
 
-    // ✅ Rutas CRUD para la gestión de Gastos de los Animali (Spese Animali)
     Route::prefix('animali/{animale}/speseanimali')->group(function () {
         Route::get('/', [SpesaAnimaleController::class, 'index'])->name('speseanimali.index');
         Route::get('/create', [SpesaAnimaleController::class, 'create'])->name('speseanimali.create');
@@ -91,7 +83,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/{spesa}', [SpesaAnimaleController::class, 'destroy'])->name('speseanimali.destroy');
     });
 
-    // ✅ Rutas CRUD para la gestión de Visite Veterinarie
     Route::prefix('animali/{animale}/visite')->group(function () {
         Route::get('/', [VisitaVeterinariaController::class, 'index'])->name('visite.index');
         Route::get('/create', [VisitaVeterinariaController::class, 'create'])->name('visite.create');
@@ -102,22 +93,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/{visita}', [VisitaVeterinariaController::class, 'destroy'])->name('visite.destroy');
     });
 
-    // ✅ Rutas para la gestión de Prodotti - Optimizado
     Route::resource('prodotti', ProdottiController::class)->parameters([
-        'prodotti' => 'prodotto'  // Corregir el nombre del parámetro para que coincida con la convención de Laravel
+        'prodotti' => 'prodotto'
     ])->except(['show']);
 
-    // ✅ Rutas adicionales para el módulo de productos
     Route::post('/prodotti/scan', [ProdottiController::class, 'scan'])->name('prodotti.scan');
     Route::post('/prodotti/update-quantity', [ProdottiController::class, 'updateQuantity'])->name('prodotti.update-quantity');
-    
-    // ✅ Ruta para agregar productos con bajo stock a la lista de compras
+     
     Route::post('/prodotti/add-to-shopping-list', [ProdottiController::class, 'addToShoppingList'])->name('prodotti.add-to-shopping');
-    
-    // ✅ Nueva ruta para la integración con Bring!
+     
     Route::post('/bring/redirect', [BringRedirectController::class, 'redirect'])->name('bring.redirect');
-    
-    // ✅ Rutas para la gestión de la lista de compras
+     
     Route::get('/shopping-list', [ShoppingListController::class, 'index'])->name('shopping.list');
     Route::post('/shopping-list', [ShoppingListController::class, 'store'])->name('shopping.store');
     Route::post('/shopping-list/add-manual', [ShoppingListController::class, 'addManualItem'])->name('shopping.add-manual');

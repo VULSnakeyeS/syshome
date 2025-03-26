@@ -10,12 +10,16 @@ class HomeController extends Controller
     public function home()
     {
         // Obtener estadísticas básicas de los servicios
-        $totalServicios = Servizio::count();
-        $totalGasto = Servizio::sum('totale_fattura');
-        $serviciosPorTipo = Servizio::select('servizio', \DB::raw('count(*) as total'))
+        $totalServizi = Servizio::count();
+        $totaleSpesa = Servizio::sum('totale_fattura');
+        $serviziPerTipo = Servizio::select('servizio', \DB::raw('count(*) as totale'))
                                     ->groupBy('servizio')
-                                    ->pluck('total', 'servizio');
+                                    ->pluck('totale', 'servizio');
 
-        return view('dashboard', compact('totalServicios', 'totalGasto', 'serviciosPorTipo'));
+        return view('dashboard', [
+            'totalServizi' => $totalServizi,
+            'totaleSpesa' => $totaleSpesa,
+            'serviziPerTipo' => $serviziPerTipo,
+        ]);
     }
 }

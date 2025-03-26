@@ -86,9 +86,15 @@
         </a>
       </li>
 
+      <!-- Nuevo elemento para Gestione App -->
+      <li class="nav-item">
+        <a class="nav-link {{ (Request::is('gestioneapp') ? 'active' : '') }}" href="{{ url('gestioneapp') }}">
+          <div class="icon icon-sm shadow border-radius-md text-center me-2 d-flex align-items-center justify-content-center bg-secondary text-white">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <span class="nav-link-text ms-1">Gestione App</span>
+        </a>
+      </li>
     </ul>
   </div>
 </aside>
-
-
-

@@ -25,7 +25,8 @@ class ServizioController extends Controller
             $totalFattura = $query->sum('totale_fattura');
         }
 
-        $servizi = $query->get();
+        // Ordenar por fecha y paginación
+        $servizi = $query->orderBy('data_fattura', 'desc')->paginate(10);
 
         return view('servizi.index', compact('servizi', 'totalFattura'));
     }
