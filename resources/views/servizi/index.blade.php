@@ -209,11 +209,10 @@
                     @method('PUT')
                     <div class="mb-3">
                         <label for="servizio" class="form-label">Servizio</label>
-                        <select name="servizio" class="form-control" required>
-                            <option value="Acqua" {{ $servizio->servizio == 'Acqua' ? 'selected' : '' }}>Acqua</option>
-                            <option value="Gas" {{ $servizio->servizio == 'Gas' ? 'selected' : '' }}>Gas</option>
-                            <option value="Internet" {{ $servizio->servizio == 'Internet' ? 'selected' : '' }}>Internet</option>
-                            <option value="Luce" {{ $servizio->servizio == 'Luce' ? 'selected' : '' }}>Luce</option>
+                        <select name="servizio" class="form-select">
+                            @foreach ($dropdownOptions->where('dropdown_name', 'servizi') as $option)
+                                <option value="{{ $option->option_value }}">{{ $option->option_value }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
@@ -276,11 +275,10 @@
                     @csrf
                     <div class="mb-3">
                         <label for="servizio" class="form-label">Servizio</label>
-                        <select name="servizio" class="form-control" required>
-                            <option value="Acqua">Acqua</option>
-                            <option value="Gas">Gas</option>
-                            <option value="Internet">Internet</option>
-                            <option value="Luce">Luce</option>
+                        <select name="servizio" class="form-select">
+                            @foreach ($dropdownOptions->where('dropdown_name', 'servizi') as $option)
+                                <option value="{{ $option->option_value }}">{{ $option->option_value }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
