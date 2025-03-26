@@ -114,6 +114,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/shopping-list/clear-purchased', [ShoppingListController::class, 'clearPurchased'])->name('shopping.clear-purchased');
 
     Route::resource('dropdown-options', DropdownOptionController::class);
+    Route::resource('gestioneapp/dropdown-options', DropdownOptionController::class);
 });
 
 Route::group(['middleware' => 'guest'], function () {
