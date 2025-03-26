@@ -16,6 +16,7 @@ use App\Http\Controllers\VisitaVeterinariaController;
 use App\Http\Controllers\ProdottiController;
 use App\Http\Controllers\BringRedirectController;
 use App\Http\Controllers\ShoppingListController;
+use App\Http\Controllers\DropdownOptionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -111,6 +112,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/shopping-list/{id}/quantity', [ShoppingListController::class, 'updateQuantity'])->name('shopping.update-quantity');
     Route::delete('/shopping-list/{id}', [ShoppingListController::class, 'destroy'])->name('shopping.destroy');
     Route::delete('/shopping-list/clear-purchased', [ShoppingListController::class, 'clearPurchased'])->name('shopping.clear-purchased');
+
+    Route::resource('dropdown-options', DropdownOptionController::class);
 });
 
 Route::group(['middleware' => 'guest'], function () {
